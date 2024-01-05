@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
@@ -9,7 +9,7 @@ const AuthorisationError = require('../errors/AuthorisationError');
 const SOLT_ROUNDS = 10;
 const MONGO_DUPLACATE_ERROR_CODE = 11000;
 
-const { JWT_SECRET = 'secret-key' } = process.env;
+const { JWT_SECRET, NODE_ENV } = process.env;
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -92,7 +92,7 @@ module.exports.login = async (req, res, next) => {
       throw new AuthorisationError('Неверный email или пароль');
     }
 
-    const token = jwt.sign({ _id: userLogin._id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ _id: userLogin._id }, NODE_ENV ? JWT_SECRET : 'dev_secret', { expiresIn: '7d' });
 
     return res.send({ token });
   } catch (error) {

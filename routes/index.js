@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const userRouter = require('./users');
-const movieRouter = require('./movies');
+const usersRouter = require('./users');
+const moviesRouter = require('./movies');
 const auth = require('../middlewares/auth');
 const { login, createUser } = require('../controllers/users');
 const NotFoundError = require('../errors/NotFoundError');
@@ -23,8 +23,8 @@ router.post('/signup', celebrate({
 
 router.use(auth);
 
-router.use(userRouter);
-router.use(movieRouter);
+router.use(usersRouter);
+router.use(moviesRouter);
 
 router.use('*', (req, res, next) => {
   next(new NotFoundError('Неверный адрес запроса'));
