@@ -8,10 +8,13 @@ const handleError = require('./middlewares/handleError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
 const limiter = require('./middlewares/rateLimit');
+const cors = require('./middlewares/cors');
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors);
 
 const { NODE_ENV, PORT, MONGO_URL } = process.env;
 
