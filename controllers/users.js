@@ -46,8 +46,9 @@ module.exports.updateUser = async (req, res, next) => {
   } catch (error) {
     if (error.name === 'ValidationError') {
       next(new ValidationError('Ошибка валидации полей'));
+    } else if (error.code === MONGO_DUPLACATE_ERROR_CODE) {
+      next(new ConflictError('Такой пользователь уже существует'));
     }
-
     return next(error);
   }
 };
@@ -65,12 +66,9 @@ module.exports.createUser = async (req, res, next) => {
   } catch (error) {
     if (error.name === 'ValidationError') {
       next(new ValidationError('Ошибка валидации полей'));
-    }
-
-    if (error.code === MONGO_DUPLACATE_ERROR_CODE) {
+    } else if (error.code === MONGO_DUPLACATE_ERROR_CODE) {
       next(new ConflictError('Такой пользователь уже существует'));
     }
-
     return next(error);
   }
 };
