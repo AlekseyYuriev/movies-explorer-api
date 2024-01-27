@@ -17,7 +17,7 @@ module.exports.createMovie = async (req, res, next) => {
   try {
     const newMovie = new Movie({ ...req.body, owner: req.user._id });
 
-    return res.status(201).send(newMovie);
+    return res.status(201).send(await newMovie.save());
   } catch (error) {
     if (error.name === 'ValidationError') {
       next(new ValidationError('Ошибка валидации полей'));
