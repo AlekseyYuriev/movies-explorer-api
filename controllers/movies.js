@@ -29,8 +29,8 @@ module.exports.createMovie = async (req, res, next) => {
 
 module.exports.deleteMovie = async (req, res, next) => {
   try {
-    const { movieId } = req.params;
-    const movie = await Movie.findById(movieId).populate('owner');
+    const { id } = req.params;
+    const movie = await Movie.findById(id).populate('owner');
 
     if (!movie) {
       throw new NotFoundError('Фильм с таким id не найден');
@@ -43,7 +43,7 @@ module.exports.deleteMovie = async (req, res, next) => {
       throw new BanError('Нельзя удалять фильмы других пользователей');
     }
 
-    await Movie.findByIdAndDelete(movieId);
+    await Movie.findByIdAndDelete(id);
 
     return res.send(movie);
   } catch (error) {
